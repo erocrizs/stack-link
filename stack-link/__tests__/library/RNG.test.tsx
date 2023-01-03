@@ -1,4 +1,4 @@
-import RNG from "@/library/random";
+import RNG from "@/library/RNG";
 
 const SEED = 1672705995434;
 const LOOP_COUNT = 1000;
