@@ -23,6 +23,10 @@ class EmojiCard {
     return this.emojis.join("");
   }
 
+  get emojiList () {
+    return Array.from(this.emojis);
+  }
+
   getEmoji(index: number): Emoji {
     return this.emojis[index];
   }
