@@ -1,6 +1,6 @@
 import RNG from "@/library/RNG";
 
-const SEED = 1672705995434;
+const SEED = Date.now();
 const LOOP_COUNT = 1000;
 
 function loopPerform(operation: Function) {
@@ -10,6 +10,7 @@ function loopPerform(operation: Function) {
 }
 
 describe("RNG", () => {
+  console.log("SEED USED: " + SEED);
   const rng = new RNG(SEED);
 
   describe("next", () => {
