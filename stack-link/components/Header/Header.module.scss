@@ -1,8 +1,9 @@
 @use "@/styles/color.scss";
+@use "@/styles/variables.scss";
 
 .Header {
   position: relative;
-  height: 75px;
+  height: variables.$header-height;
   text-align: center;
   color: color.$color-dark-jean;
   background-color: color.$color-peach;
