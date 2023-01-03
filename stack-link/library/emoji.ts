@@ -102,7 +102,7 @@ export enum EmojiColor {
   Black
 }
 
-const EmojiGroup = [
+const emojiGroup = [
   [Emoji.HotFace,  Emoji.WearyCat,  Emoji.ROFL,  Emoji.NauseatedFace,  Emoji.ColdFace,  Emoji.AlienMonster,  Emoji.Clown,  Emoji.Robot],
   [Emoji.SantaClaus,  Emoji.WomanSuperhero,  Emoji.Princess,  Emoji.Troll,  Emoji.ManGenie,  Emoji.WomanWithHeadscarf,  Emoji.Cook,  Emoji.Ninja],
   [Emoji.Strawberry,  Emoji.Tangerine,  Emoji.Mango,  Emoji.GreenApple,  Emoji.Blueberries,  Emoji.Eggplant,  Emoji.Garlic,  Emoji.RiceBall],
@@ -113,10 +113,12 @@ const EmojiGroup = [
   [Emoji.NoEntry,  Emoji.Radioactive,  Emoji.Warning,  Emoji.Recycle,  Emoji.Wheelchair,  Emoji.Pisces,  Emoji.Peace,  Emoji.YinYang],
 ];
 
+export const emojis = emojiGroup.flat();
+
 export function GetEmoji(category: EmojiCategory, color: EmojiColor): Emoji {
-  return EmojiGroup[category as number][color as number];
+  return emojiGroup[category as number][color as number];
 }
 
 export function GetEmojiGroup(category: EmojiCategory): Emoji[] {
-  return [...EmojiGroup[category as number]];
+  return [...emojiGroup[category as number]];
 }
