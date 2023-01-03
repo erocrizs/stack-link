@@ -1,0 +1,29 @@
+@use "@/styles/color.scss";
+
+.Header {
+  position: relative;
+  height: 75px;
+  text-align: center;
+  color: color.$color-dark-jean;
+  background-color: color.$color-peach;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  
+  .Title {
+    flex: 1 0 auto;
+    margin: 0px;
+  }
+
+  .About {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    right: 15px;
+    width: 50px;
+
+    display: grid;
+    align-items: center;
+  }
+}
