@@ -5,7 +5,15 @@ class EmojiCard {
 
   constructor(emojis: Emoji[]) {
     if (emojis.length !== 9) {
-      throw Error("EmojiCard should contain exactly 9 Emojis");
+      throw Error("Argument emojis do not have exactly 9 Emojis: " + emojis.join());
+    }
+
+    for (let i = 0; i < emojis.length; i++) {
+      for (let j = i + 1; j < emojis.length; j++) {
+        if (emojis[i] === emojis[j]) {
+          throw Error("Duplicate emojis found in the card: " + emojis[i]);
+        }
+      }
     }
 
     this.emojis = emojis;

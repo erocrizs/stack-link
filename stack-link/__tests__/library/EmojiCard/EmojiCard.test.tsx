@@ -3,8 +3,8 @@ import EmojiCard from "@/library/EmojiCard/EmojiCard";
 
 describe("EmojiCard", () => {
   it("should throw an error if there are wrong number of emojis", () => {
-     expect(() => new EmojiCard([])).toThrow("EmojiCard should contain exactly 9 Emojis");
-     expect(() => new EmojiCard([Emoji.Eggplant])).toThrow("EmojiCard should contain exactly 9 Emojis");
+     expect(() => new EmojiCard([])).toThrow("Argument emojis do not have exactly 9 Emojis: ");
+     expect(() => new EmojiCard([Emoji.Eggplant])).toThrow("Argument emojis do not have exactly 9 Emojis: 🍆");
      expect(() => new EmojiCard([
       Emoji.Eggplant,
       Emoji.AlienMonster,
@@ -16,8 +16,44 @@ describe("EmojiCard", () => {
       Emoji.Garlic,
       Emoji.Turtle,
       Emoji.ColdFace
-    ])).toThrow("EmojiCard should contain exactly 9 Emojis");
+    ])).toThrow("Argument emojis do not have exactly 9 Emojis: 🍆,👾,🤖,☂,♟,🦺,🎅,🧄,🐢,🥶");
   });
+
+  it("should throw an error if there are any duplicate emoji", () => {
+    expect(() => new EmojiCard([
+     Emoji.Eggplant,
+     Emoji.AlienMonster,
+     Emoji.Robot,
+     Emoji.SantaClaus,
+     Emoji.ChessPawn,
+     Emoji.SafetyVest,
+     Emoji.SantaClaus,
+     Emoji.Garlic,
+     Emoji.Turtle,
+   ])).toThrow("Duplicate emojis found in the card: 🎅");
+   expect(() => new EmojiCard([
+    Emoji.Eggplant,
+    Emoji.AlienMonster,
+    Emoji.AlienMonster,
+    Emoji.Umbrella,
+    Emoji.ChessPawn,
+    Emoji.SafetyVest,
+    Emoji.SantaClaus,
+    Emoji.Garlic,
+    Emoji.Turtle,
+  ])).toThrow("Duplicate emojis found in the card: 👾");
+  expect(() => new EmojiCard([
+    Emoji.Eggplant,
+    Emoji.AlienMonster,
+    Emoji.Robot,
+    Emoji.Umbrella,
+    Emoji.ChessPawn,
+    Emoji.SafetyVest,
+    Emoji.SantaClaus,
+    Emoji.Garlic,
+    Emoji.Eggplant,
+  ])).toThrow("Duplicate emojis found in the card: 🍆");
+ });
 
   it("should create the appropriate emojiString from the input", () => {
     const test = new EmojiCard([
