@@ -1,8 +1,9 @@
 import StackLinkCard from "@/components/StackLinkCard/StackLinkCard";
+import { Emoji, GetEmojiSrc } from "@/library/emoji";
 import EmojiCard from "@/library/EmojiCard/EmojiCard";
 import EmojiCardGenerator from "@/library/EmojiCard/EmojiCardGenerator";
 import styles from "@/pages/index.module.scss"
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 enum HomeState {
   Loading,
@@ -14,20 +15,42 @@ enum HomeState {
   InvalidDate,
 }
 
+type GeneratorType = Generator<EmojiCard, EmojiCard, undefined>;
+
 export default function Home() {
-  const [state, setState] = useState(HomeState.Play);
+  const [state, setState] = useState(HomeState.Loading);
   const [score, setScore] = useState(0);
-  const [generator, setGenerator] = useState(EmojiCardGenerator(25));
-  const [cardStack, setCardStack] = useState([generator.next().value, generator.next().value]);
+  const [generator, setGenerator] : [GeneratorType | undefined, Dispatch<SetStateAction<GeneratorType | undefined>>] = useState<GeneratorType>();
+  const [cardStack, setCardStack] : [EmojiCard[], Dispatch<SetStateAction<EmojiCard[]>>] = useState<EmojiCard[]>([]);
+  const [mainCardRender, setMainCardRender] = useState(<div>Main</div>);
+  const [smallCardsRenders, setSmallCardRenders] = useState([[(<span>Hello world</span>), ""]]);
 
-  let mainCardRender: JSX.Element = <div>Main</div>;
-  let smallCardsRenders: [JSX.Element, string][] = [[(<span>Hello world</span>), ""]];
+  useEffect(() => {
+    if (!generator) {
+      const newGenerator = EmojiCardGenerator(25);
+      setGenerator(newGenerator);
+      setCardStack([newGenerator.next().value, newGenerator.next().value]);
+      setState(HomeState.Play);
+    }
+  }, []);
 
-  if (state === HomeState.Play) {
-    const [currentCard, ...otherCards] = cardStack;
-    mainCardRender = <StackLinkCard card={currentCard}/>
-    smallCardsRenders = otherCards.map(card => [<StackLinkCard card={card}/>, card.emojiString]);
-  }
+  useEffect(() => {
+    if (state === HomeState.Play) {
+      const currentCard = cardStack.slice(-1)[0];
+      const otherCards = cardStack.slice(0, -1);
+      setMainCardRender(<StackLinkCard card={currentCard} onClick={guessLinkEmoji}/>)
+      setSmallCardRenders(otherCards.map(card => [<StackLinkCard card={card}/>, card.emojiString]));
+    }
+  }, [state, cardStack]);
+
+  const guessLinkEmoji = (guess: Emoji) => {
+    const [cardA, cardB] = cardStack.slice(-2);
+
+    console.log(`Guessing ${guess}... (${cardA.emojiString}) (${cardB.emojiString})`);
+    if (cardA.emojiList.includes(guess) && cardB.emojiList.includes(guess)) {
+      console.log("Correct!");
+    }
+  };
 
   return (
     <div className={styles.Body} data-testid="Body">
