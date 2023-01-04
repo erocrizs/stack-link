@@ -1,3 +1,5 @@
+import StackLinkCard from "@/components/StackLinkCard/StackLinkCard";
+import EmojiCard from "@/library/EmojiCard/EmojiCard";
 import EmojiCardGenerator from "@/library/EmojiCard/EmojiCardGenerator";
 import styles from "@/pages/index.module.scss"
 import { useState } from "react";
@@ -13,8 +15,19 @@ enum HomeState {
 }
 
 export default function Home() {
-  const [state, setState] = useState(HomeState.Menu);
+  const [state, setState] = useState(HomeState.Play);
   const [score, setScore] = useState(0);
+  const [generator, setGenerator] = useState(EmojiCardGenerator(25));
+  const [cardStack, setCardStack] = useState([generator.next().value, generator.next().value]);
+
+  let mainCardRender: JSX.Element = <div>Main</div>;
+  let smallCardsRenders: [JSX.Element, string][] = [[(<span>Hello world</span>), ""]];
+
+  if (state === HomeState.Play) {
+    const [currentCard, ...otherCards] = cardStack;
+    mainCardRender = <StackLinkCard card={currentCard}/>
+    smallCardsRenders = otherCards.map(card => [<StackLinkCard card={card}/>, card.emojiString]);
+  }
 
   return (
     <div className={styles.Body} data-testid="Body">
@@ -22,27 +35,18 @@ export default function Home() {
         <div className={styles.BodyFlex}>
           <div className={styles.Score}>{score} / 25</div>
           <div className={[styles.MainCard, styles.Card].join(" ")}>
+            {mainCardRender}
+          </div>
           <div className={styles.SmallCardDock}>
-            <div className={styles.SmallCardContainer}>
-              <div className={styles.SmallCard}>
-              </div>
-            </div>
-            <div className={styles.SmallCardContainer}>
-              <div className={styles.SmallCard}>
-              </div>
-            </div>
-            <div className={styles.SmallCardContainer}>
-              <div className={styles.SmallCard}>
-              </div>
-            </div>
-            <div className={styles.SmallCardContainer}>
-              <div className={styles.SmallCard}>
-              </div>
-            </div>
-            <div className={styles.SmallCardContainer}>
-              <div className={styles.SmallCard}>
-              </div>
-            </div>
+            {
+              smallCardsRenders.map(([element, key]) => (
+                <div key={key} className={styles.SmallCardContainer}>
+                  <div className={[styles.SmallCard, styles.Card].join(" ")}>
+                    {element}
+                  </div>
+                </div>
+              ))
+            }
           </div>
         </div>
         <div className={styles.Footer}>
