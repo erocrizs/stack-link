@@ -21,7 +21,7 @@ emojiList.forEach(
   emoji => {
     const codepoint = emoji.codePointAt(0).toString(16).toUpperCase();
     console.log(`copying for ${emoji} - ${codepoint}`);
-    fs.copyFileSync(`${omColorDirectory}/${codepoint}.svg`, `${colorDirectory}/${codepoint}.svg`);
-    fs.copyFileSync(`${omBlackDirectory}/${codepoint}.svg`, `${blackDirectory}/${codepoint}.svg`);
+    fs.copyFileSync(`${omColorDirectory}/${codepoint}.svg`, `${colorDirectory}/${emoji}.svg`);
+    fs.copyFileSync(`${omBlackDirectory}/${codepoint}.svg`, `${blackDirectory}/${emoji}.svg`);
   }
 );

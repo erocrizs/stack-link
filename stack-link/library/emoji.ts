@@ -124,9 +124,5 @@ export function GetEmojiGroup(category: EmojiCategory): Emoji[] {
 }
 
 export function GetEmojiSrc(emoji: Emoji) {
-  const codePoint = emoji.codePointAt(0)?.toString(16).toUpperCase();
-  if (!codePoint) {
-    return null;
-  }
-  return `emoji/color/${codePoint}.svg`;
+  return `emoji/color/${emoji}.svg`;
 }
