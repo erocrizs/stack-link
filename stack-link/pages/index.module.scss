@@ -54,7 +54,7 @@
         }
   
         display: flex;
-        flex-flow: row-reverse nowrap;
+        flex-flow: row nowrap;
         justify-content: flex-start;
         align-items: center;
   
@@ -70,11 +70,11 @@
           }
   
           &:first-of-type:not(:only-child) {
-            margin-right: calc(25%);
+            margin-left: calc(25%);
           }
   
           &:last-of-type:not(:only-child) {
-            margin-left: calc(25%);
+            margin-right: calc(25%);
           }
   
           .SmallCard {

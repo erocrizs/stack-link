@@ -1,9 +1,10 @@
+import MainMessageCard from "@/components/MainMessageCard/MainMessageCard";
 import StackLinkCard from "@/components/StackLinkCard/StackLinkCard";
 import { Emoji } from "@/library/emoji";
 import EmojiCard from "@/library/EmojiCard/EmojiCard";
 import EmojiCardGenerator from "@/library/EmojiCard/EmojiCardGenerator";
 import styles from "@/pages/index.module.scss"
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { createRef, Dispatch, SetStateAction, useEffect, useState } from "react";
 
 enum HomeState {
   Loading,
@@ -22,6 +23,7 @@ type SmallCardDetail = { element: JSX.Element, key: string };
 export default function Home() {
   const [state, setState] = useState(HomeState.Loading);
   const [score, setScore] = useState(0);
+  const [lastCard, setLastCard] = useState(false);
   const [generator, setGenerator] : StateTuple<GeneratorType | undefined> = useState<GeneratorType>();
   const [cardStack, setCardStack] : StateTuple<EmojiCard[]> = useState<EmojiCard[]>([]);
   const [mainCardRender, setMainCardRender] = useState(<div>Main</div>);
@@ -30,11 +32,14 @@ export default function Home() {
     key: "",
   }]);
 
+  const smallCardDockRef = createRef<HTMLDivElement>();
+
   useEffect(() => {
     if (!generator) {
-      const newGenerator = EmojiCardGenerator(25);
+      const newGenerator = EmojiCardGenerator(3);
       setGenerator(newGenerator);
       setCardStack([newGenerator.next().value, newGenerator.next().value]);
+      setScore(1);
       setState(HomeState.Play);
     }
   }, []);
@@ -52,15 +57,53 @@ export default function Home() {
           })
         )
       );
+      return;
+    }
+
+    if (state === HomeState.DoneWin) {
+      setMainCardRender(
+        <MainMessageCard
+          title="You Win!"
+          messages={[`You got all ${score} cards! Good job!`]}
+          buttonOption={{
+            label: "SHARE",
+            onClick: () => console.log("Share"),
+          }}/>
+      );
+      setSmallCardRenders([
+        ...cardStack.map(
+          card => ({
+            element: <StackLinkCard card={card}/>,
+            key: card.emojiString
+          })
+        ),
+        {
+          element: <MainMessageCard buttonOption={{label: "REPLAY", onClick: () => console.log("Replay")}}/>,
+          key: "replay-button"
+        }
+      ]);
     }
   }, [state, cardStack]);
+
+  useEffect(() => {
+    const dock = smallCardDockRef.current as HTMLDivElement;
+    dock.scrollLeft = dock.scrollWidth;
+  }, [smallCardsRenders]);
 
   const guessLinkEmoji = (guess: Emoji) => {
     const [cardA, cardB] = cardStack.slice(-2);
 
-    console.log(`Guessing ${guess}... (${cardA.emojiString}) (${cardB.emojiString})`);
     if (cardA.emojiList.includes(guess) && cardB.emojiList.includes(guess)) {
-      console.log("Correct!");
+      setScore(score + 1);
+
+      if (lastCard) {
+        setState(HomeState.DoneWin);
+        return;
+      }
+
+      const newResult = generator?.next();
+      setCardStack([...cardStack, newResult?.value as EmojiCard]);
+      setLastCard(newResult?.done as boolean);
     }
   };
 
@@ -72,7 +115,7 @@ export default function Home() {
           <div className={[styles.MainCard, styles.Card].join(" ")}>
             {mainCardRender}
           </div>
-          <div className={styles.SmallCardDock}>
+          <div className={styles.SmallCardDock} ref={smallCardDockRef}>
             {
               smallCardsRenders.map(({element, key}) => (
                 <div key={key} className={styles.SmallCardContainer}>
