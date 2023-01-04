@@ -17,7 +17,7 @@ export default function Home() {
   const [score, setScore] = useState(0);
 
   return (
-    <div className={styles.Body}>
+    <div className={styles.Body} data-testid="Body">
       <div className={styles.BodyWidth}>
         <div className={styles.BodyFlex}>
           <div className={styles.Score}>{score} / 25</div>
