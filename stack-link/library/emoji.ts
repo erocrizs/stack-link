@@ -7,14 +7,14 @@ export enum Emoji {
   ColdFace = "🥶",
   AlienMonster = "👾",
   Clown = "🤡",
-  Robot = "🤖",
+  NewMoonFace = "🌚",
 
   // People
   SantaClaus = "🎅",
   WomanSuperhero = "🦸‍♀️",
   Princess = "👸",
   Troll = "🧌",
-  ManGenie = "🧞‍♂️",
+  Mage = "🧙",
   WomanWithHeadscarf = "🧕",
   Cook = "👨‍🍳",
   Ninja = "🥷",
@@ -103,8 +103,8 @@ export enum EmojiColor {
 }
 
 const emojiGroup = [
-  [Emoji.HotFace,  Emoji.WearyCat,  Emoji.ROFL,  Emoji.NauseatedFace,  Emoji.ColdFace,  Emoji.AlienMonster,  Emoji.Clown,  Emoji.Robot],
-  [Emoji.SantaClaus,  Emoji.WomanSuperhero,  Emoji.Princess,  Emoji.Troll,  Emoji.ManGenie,  Emoji.WomanWithHeadscarf,  Emoji.Cook,  Emoji.Ninja],
+  [Emoji.HotFace,  Emoji.WearyCat,  Emoji.ROFL,  Emoji.NauseatedFace,  Emoji.ColdFace,  Emoji.AlienMonster,  Emoji.Clown,  Emoji.NewMoonFace],
+  [Emoji.SantaClaus,  Emoji.WomanSuperhero,  Emoji.Princess,  Emoji.Troll,  Emoji.Mage,  Emoji.WomanWithHeadscarf,  Emoji.Cook,  Emoji.Ninja],
   [Emoji.Strawberry,  Emoji.Tangerine,  Emoji.Mango,  Emoji.GreenApple,  Emoji.Blueberries,  Emoji.Eggplant,  Emoji.Garlic,  Emoji.RiceBall],
   [Emoji.ShintoShrine,  Emoji.Synagogue,  Emoji.OncomingBus,  Emoji.Tractor,  Emoji.StatueOfLiberty,  Emoji.Umbrella,  Emoji.Church,  Emoji.ArticulatedLorry],
   [Emoji.Parrot,  Emoji.Tiger,  Emoji.HoneyBee,  Emoji.Turtle,  Emoji.Whale,  Emoji.Pig,  Emoji.Ram,  Emoji.Gorilla],

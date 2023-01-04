@@ -8,7 +8,7 @@ describe("EmojiCard", () => {
      expect(() => new EmojiCard([
       Emoji.Eggplant,
       Emoji.AlienMonster,
-      Emoji.Robot,
+      Emoji.NewMoonFace,
       Emoji.Umbrella,
       Emoji.ChessPawn,
       Emoji.SafetyVest,
@@ -23,7 +23,7 @@ describe("EmojiCard", () => {
     expect(() => new EmojiCard([
      Emoji.Eggplant,
      Emoji.AlienMonster,
-     Emoji.Robot,
+     Emoji.NewMoonFace,
      Emoji.SantaClaus,
      Emoji.ChessPawn,
      Emoji.SafetyVest,
@@ -45,7 +45,7 @@ describe("EmojiCard", () => {
   expect(() => new EmojiCard([
     Emoji.Eggplant,
     Emoji.AlienMonster,
-    Emoji.Robot,
+    Emoji.NewMoonFace,
     Emoji.Umbrella,
     Emoji.ChessPawn,
     Emoji.SafetyVest,
@@ -59,7 +59,7 @@ describe("EmojiCard", () => {
     const test = new EmojiCard([
       Emoji.Eggplant,
       Emoji.AlienMonster,
-      Emoji.Robot,
+      Emoji.NewMoonFace,
       Emoji.Umbrella,
       Emoji.ChessPawn,
       Emoji.SafetyVest,
@@ -76,7 +76,7 @@ describe("EmojiCard", () => {
       const test = new EmojiCard([
         Emoji.Eggplant,
         Emoji.AlienMonster,
-        Emoji.Robot,
+        Emoji.NewMoonFace,
         Emoji.Umbrella,
         Emoji.ChessPawn,
         Emoji.SafetyVest,
@@ -87,7 +87,7 @@ describe("EmojiCard", () => {
   
       expect(test.getEmoji(0)).toBe(Emoji.Eggplant);
       expect(test.getEmoji(1)).toBe(Emoji.AlienMonster);
-      expect(test.getEmoji(2)).toBe(Emoji.Robot);
+      expect(test.getEmoji(2)).toBe(Emoji.NewMoonFace);
       expect(test.getEmoji(3)).toBe(Emoji.Umbrella);
       expect(test.getEmoji(4)).toBe(Emoji.ChessPawn);
       expect(test.getEmoji(5)).toBe(Emoji.SafetyVest);
