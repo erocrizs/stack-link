@@ -1,4 +1,4 @@
-import MainMessageCard from "@/components/MainMessageCard/MainMessageCard";
+import MessageCard from "@/components/MessageCard/MessageCard";
 import StackLinkCard from "@/components/StackLinkCard/StackLinkCard";
 import { Emoji } from "@/library/emoji";
 import EmojiCard from "@/library/EmojiCard/EmojiCard";
@@ -36,7 +36,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!generator) {
-      const newGenerator = EmojiCardGenerator(3);
+      const newGenerator = EmojiCardGenerator(25);
       setGenerator(newGenerator);
       setCardStack([newGenerator.next().value, newGenerator.next().value]);
       setScore(1);
@@ -62,7 +62,7 @@ export default function Home() {
 
     if (state === HomeState.DoneWin) {
       setMainCardRender(
-        <MainMessageCard
+        <MessageCard
           title="You Win!"
           messages={[`You got all ${score} cards! Good job!`]}
           buttonOption={{
@@ -78,9 +78,9 @@ export default function Home() {
           })
         ),
         {
-          element: <MainMessageCard buttonOption={{label: "REPLAY", onClick: () => console.log("Replay")}}/>,
+          element: <MessageCard buttonOption={{label: "REPLAY", onClick: () => console.log("Replay")}}/>,
           key: "replay-button"
-        }
+        },
       ]);
     }
   }, [state, cardStack]);

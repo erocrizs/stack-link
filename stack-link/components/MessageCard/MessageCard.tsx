@@ -1,6 +1,6 @@
-import styles from "./MainMessageCard.module.scss";
+import styles from "./MessageCard.module.scss";
 
-type MainMessageCardProps = {
+type MessageCardProps = {
   title?: string,
   messages?: string[],
   buttonOption?: {
@@ -9,10 +9,10 @@ type MainMessageCardProps = {
   },
 };
 
-export default function MainMessageCard({title, messages, buttonOption}: MainMessageCardProps) {
+export default function MessageCard({title, messages, buttonOption}: MessageCardProps) {
   return (
     <div className={styles.MainMessageCard}>
-      {title && (<h1 className={styles.Title}>{title}</h1>)}
+      {title && (<h2 className={styles.Title}>{title}</h2>)}
       {
         messages && (<div className={styles.Messages}>
           {

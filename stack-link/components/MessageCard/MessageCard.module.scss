@@ -1,0 +1,50 @@
+@use "@/styles/color.scss";
+
+.MainMessageCard {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-color: color.$color-peach;
+  padding: 15px;
+  text-align: center;
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;;
+
+  .Title {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .Messages {
+    margin-bottom: 10px;
+
+    .Message {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  }
+
+  .ButtonArea {
+    display: grid;
+    align-items: center;
+
+    .Button {
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background-color: color.$color-jean;
+      color: color.$color-white;
+
+      &:focus-visible, &:focus, &:hover {
+        outline: none;
+        background-color: color.$color-fade-jean;
+      }
+    }
+  }
+}
