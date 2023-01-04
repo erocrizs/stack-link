@@ -17,6 +17,7 @@ export default function* EmojiCardGenerator(size: number, seed?: number): Genera
 
     const newEmojiCard = emojiState.splice(0, 8);
     newEmojiCard.push(emojiState[0]);
+    rng.shuffleList(emojiState);
     yield new EmojiCard(newEmojiCard);
   }
 

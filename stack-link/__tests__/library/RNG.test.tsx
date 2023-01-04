@@ -53,4 +53,14 @@ describe("RNG", () => {
       expect(list.every(x => bitMap[x])).toBeTruthy();
     });
   });
+
+  describe("shuffleList", () => {
+    it("should shuffle the list", () => {
+      const list = Array.from({length: 1000}, (_,x) => x);
+      const originalList = [...list];
+      rng.shuffleList(list);
+      expect(list).toEqual(expect.arrayContaining(originalList));
+      expect(list).not.toEqual(originalList);
+    });
+  });
 });

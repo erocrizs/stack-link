@@ -22,4 +22,11 @@ export default class RNG {
   randomPick<T>(list: T[]): T {
     return list[this.randomIntegerBetween(0, list.length)];
   }
+
+  shuffleList<T>(list: T[]) {
+    for (let i = 0; i < list.length - 1; i++) {
+      const j = this.randomIntegerBetween(i+1, list.length);
+      [list[i], list[j]] = [list[j], list[i]];
+    }
+  }
 }
