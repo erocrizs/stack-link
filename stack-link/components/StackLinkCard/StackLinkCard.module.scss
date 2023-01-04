@@ -1,0 +1,15 @@
+@use "@/styles/color.scss";
+
+.StackLinkCard {
+  height: 100%;
+  width: 100%;
+  background-color: color.$color-white;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+  grid-gap: 15px;
+
+  .ImageContainer {
+    position: relative;
+  }
+}

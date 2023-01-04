@@ -122,3 +122,11 @@ export function GetEmoji(category: EmojiCategory, color: EmojiColor): Emoji {
 export function GetEmojiGroup(category: EmojiCategory): Emoji[] {
   return [...emojiGroup[category as number]];
 }
+
+export function GetEmojiSrc(emoji: Emoji) {
+  const codePoint = emoji.codePointAt(0)?.toString(16).toUpperCase();
+  if (!codePoint) {
+    return null;
+  }
+  return `emoji/color/${codePoint}.svg`;
+}
