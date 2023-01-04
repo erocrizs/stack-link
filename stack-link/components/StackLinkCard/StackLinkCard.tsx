@@ -9,7 +9,6 @@ type StackLinkCardProps = {
 };
 
 export default function StackLinkCard ({card, onClick}: StackLinkCardProps) {
-  console.log(card.emojiString);
   return <div className={styles.StackLinkCard}>
     {
       card.emojiList.map(emoji => (

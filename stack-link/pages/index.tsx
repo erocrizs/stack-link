@@ -1,5 +1,5 @@
 import StackLinkCard from "@/components/StackLinkCard/StackLinkCard";
-import { Emoji, GetEmojiSrc } from "@/library/emoji";
+import { Emoji } from "@/library/emoji";
 import EmojiCard from "@/library/EmojiCard/EmojiCard";
 import EmojiCardGenerator from "@/library/EmojiCard/EmojiCardGenerator";
 import styles from "@/pages/index.module.scss"
@@ -15,15 +15,20 @@ enum HomeState {
   InvalidDate,
 }
 
+type StateTuple<T> = [T,  Dispatch<SetStateAction<T>>];
 type GeneratorType = Generator<EmojiCard, EmojiCard, undefined>;
+type SmallCardDetail = { element: JSX.Element, key: string };
 
 export default function Home() {
   const [state, setState] = useState(HomeState.Loading);
   const [score, setScore] = useState(0);
-  const [generator, setGenerator] : [GeneratorType | undefined, Dispatch<SetStateAction<GeneratorType | undefined>>] = useState<GeneratorType>();
-  const [cardStack, setCardStack] : [EmojiCard[], Dispatch<SetStateAction<EmojiCard[]>>] = useState<EmojiCard[]>([]);
+  const [generator, setGenerator] : StateTuple<GeneratorType | undefined> = useState<GeneratorType>();
+  const [cardStack, setCardStack] : StateTuple<EmojiCard[]> = useState<EmojiCard[]>([]);
   const [mainCardRender, setMainCardRender] = useState(<div>Main</div>);
-  const [smallCardsRenders, setSmallCardRenders] = useState([[(<span>Hello world</span>), ""]]);
+  const [smallCardsRenders, setSmallCardRenders] = useState<SmallCardDetail[]>([{
+    element: (<span>Hello world</span>),
+    key: "",
+  }]);
 
   useEffect(() => {
     if (!generator) {
@@ -39,7 +44,14 @@ export default function Home() {
       const currentCard = cardStack.slice(-1)[0];
       const otherCards = cardStack.slice(0, -1);
       setMainCardRender(<StackLinkCard card={currentCard} onClick={guessLinkEmoji}/>)
-      setSmallCardRenders(otherCards.map(card => [<StackLinkCard card={card}/>, card.emojiString]));
+      setSmallCardRenders(
+        otherCards.map(
+          card => ({
+            element: <StackLinkCard card={card}/>,
+            key: card.emojiString
+          })
+        )
+      );
     }
   }, [state, cardStack]);
 
@@ -62,7 +74,7 @@ export default function Home() {
           </div>
           <div className={styles.SmallCardDock}>
             {
-              smallCardsRenders.map(([element, key]) => (
+              smallCardsRenders.map(({element, key}) => (
                 <div key={key} className={styles.SmallCardContainer}>
                   <div className={[styles.SmallCard, styles.Card].join(" ")}>
                     {element}
