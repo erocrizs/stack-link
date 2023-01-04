@@ -21,7 +21,7 @@ export default function Home() {
       <div className={styles.BodyWidth}>
         <div className={styles.BodyFlex}>
           <div className={styles.Score}>{score} / 25</div>
-          <div className={styles.MainCard}></div>
+          <div className={[styles.MainCard, styles.Card].join(" ")}>
           <div className={styles.SmallCardDock}>
             <div className={styles.SmallCardContainer}>
               <div className={styles.SmallCard}>

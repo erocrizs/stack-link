@@ -36,8 +36,6 @@
       .MainCard {
         flex: 0 1 variables.$main-card-size;
         max-height: variables.$main-card-size;
-        aspect-ratio: 1;
-        background-color: color.$color-white;
       }
     
       .SmallCardDock {
@@ -80,8 +78,6 @@
   
           .SmallCard {
             height: 100%;
-            aspect-ratio: 1;
-            background-color: color.$color-white;
           }
         }
       }
@@ -119,4 +115,13 @@
       }
     }
   }
+}
+
+.Card {
+  box-sizing: border-box;
+  aspect-ratio: 1;
+  background-color: color.$color-white;
+  box-shadow: 5px 5px 8px color.$color-shadow;
+  padding: variables.$card-padding;
+  border-radius: variables.$card-padding;
 }
