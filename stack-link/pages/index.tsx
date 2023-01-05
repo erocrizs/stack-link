@@ -46,17 +46,12 @@ export default function Home() {
 
   useEffect(() => {
     if (state === HomeState.Play) {
-      const currentCard = cardStack.slice(-1)[0];
-      const otherCards = cardStack.slice(0, -1);
+      const [otherCard, currentCard] = cardStack.slice(-2);
       setMainCardRender(<StackLinkCard card={currentCard} onClick={guessLinkEmoji}/>)
-      setSmallCardRenders(
-        otherCards.map(
-          card => ({
-            element: <StackLinkCard card={card}/>,
-            key: card.emojiString
-          })
-        )
-      );
+      setSmallCardRenders([{
+        element: <StackLinkCard card={otherCard} onClick={guessLinkEmoji}/>,
+        key: otherCard.emojiString,
+      }]);
       return;
     }
 
