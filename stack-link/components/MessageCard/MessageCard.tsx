@@ -7,11 +7,18 @@ type MessageCardProps = {
     label: string,
     onClick: () => void,
   },
+  flippedDown?: boolean
 };
 
-export default function MessageCard({title, messages, buttonOption}: MessageCardProps) {
+export default function MessageCard({title, messages, buttonOption, flippedDown = false}: MessageCardProps) {
+  const cardClasses = [styles.MessageCard];
+
+  if (flippedDown) {
+    cardClasses.push(styles.FlippedDown);
+  }
+
   return (
-    <div className={styles.MainMessageCard}>
+    <div className={cardClasses.join(" ")}>
       {title && (<h2 className={styles.Title}>{title}</h2>)}
       {
         messages && (<div className={styles.Messages}>

@@ -5,17 +5,21 @@ import styles from "./StackLinkCard.module.scss";
 
 type StackLinkCardProps = {
   card: EmojiCard,
+  cardNumber: string | number,
   onClick?: undefined | ((emoji: Emoji) => void),
 };
 
-export default function StackLinkCard ({card, onClick}: StackLinkCardProps) {
+export default function StackLinkCard ({card, cardNumber, onClick}: StackLinkCardProps) {
   return <div className={styles.StackLinkCard}>
-    {
-      card.emojiList.map(emoji => (
-        <div key={emoji} className={styles.ImageContainer}>
-          <Image src={GetEmojiSrc(emoji)} alt={emoji} fill onClick={onClick && (() =>  onClick(emoji))}/>
-        </div>
-      ))
-    }
+    <div className={styles.Grid}>
+      {
+        card.emojiList.map(emoji => (
+          <div key={emoji} className={styles.ImageContainer}>
+            <Image src={GetEmojiSrc(emoji)} alt={emoji} fill onClick={onClick && (() =>  onClick(emoji))}/>
+          </div>
+        ))
+      }
+    </div>
+    <div className={styles.CardNumber}>{cardNumber}</div>
   </div>
 }
