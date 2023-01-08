@@ -1,12 +1,12 @@
-import EmojiCardGenerator from "@/library/EmojiCard/EmojiCardGenerator";
+import EmojiSetGenerator from "@/library/EmojiSet/EmojiSetGenerator";
 
 const SEED = Date.now();
 
-describe("EmojiCardGenerator", () => {
+describe("EmojiSetGenerator", () => {
   console.log("SEED USED: " + SEED);
   
   test("should generate the specified number of cards", () => {
-    const generator = EmojiCardGenerator(10, SEED);
+    const generator = EmojiSetGenerator(10, SEED);
     
     let counter = 0;
     let result;
@@ -19,7 +19,7 @@ describe("EmojiCardGenerator", () => {
   });
 
   test("should maintain exactly one emoji link between cards", () => {
-    const generator = EmojiCardGenerator(100, SEED);
+    const generator = EmojiSetGenerator(100, SEED);
     
     let result = generator.next();
     let cardA = null;

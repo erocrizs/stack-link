@@ -1,6 +1,6 @@
 import { Emoji } from "../emoji";
 
-class EmojiCard {
+class EmojiSet {
   private emojis: Emoji[];
 
   constructor(emojis: Emoji[]) {
@@ -11,7 +11,7 @@ class EmojiCard {
     for (let i = 0; i < emojis.length; i++) {
       for (let j = i + 1; j < emojis.length; j++) {
         if (emojis[i] === emojis[j]) {
-          throw Error("Duplicate emojis found in the card: " + emojis[i]);
+          throw Error("Duplicate emojis found in the set: " + emojis[i]);
         }
       }
     }
@@ -32,4 +32,4 @@ class EmojiCard {
   }
 }
 
-export default EmojiCard;
+export default EmojiSet;

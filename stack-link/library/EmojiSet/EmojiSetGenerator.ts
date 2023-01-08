@@ -1,8 +1,8 @@
 import RNG from "../RNG";
 import { Emoji, emojis } from "../emoji";
-import EmojiCard from "./EmojiCard";
+import EmojiSet from "./EmojiSet";
 
-export default function* EmojiCardGenerator(size: number, seed?: number): Generator<EmojiCard, EmojiCard, undefined> {
+export default function* EmojiSetGenerator(size: number, seed?: number): Generator<EmojiSet, EmojiSet, undefined> {
   const rng = new RNG(seed || Date.now());
 
   const emojiState: Emoji[] = [];
@@ -15,12 +15,12 @@ export default function* EmojiCardGenerator(size: number, seed?: number): Genera
       }
     }
 
-    const newEmojiCard = emojiState.splice(0, 8);
-    newEmojiCard.push(emojiState[0]);
-    rng.shuffleList(newEmojiCard);
-    yield new EmojiCard(newEmojiCard);
+    const newSet = emojiState.splice(0, 8);
+    newSet.push(emojiState[0]);
+    rng.shuffleList(newSet);
+    yield new EmojiSet(newSet);
     rng.shuffleList(emojiState);
   }
 
-  return new EmojiCard(emojiState);
+  return new EmojiSet(emojiState);
 }

@@ -1,11 +1,11 @@
 import { Emoji } from "@/library/emoji";
-import EmojiCard from "@/library/EmojiCard/EmojiCard";
+import EmojiSet from "@/library/EmojiSet/EmojiSet";
 
-describe("EmojiCard", () => {
+describe("EmojiSet", () => {
   it("should throw an error if there are wrong number of emojis", () => {
-     expect(() => new EmojiCard([])).toThrow("Argument emojis do not have exactly 9 Emojis: ");
-     expect(() => new EmojiCard([Emoji.Eggplant])).toThrow("Argument emojis do not have exactly 9 Emojis: 🍆");
-     expect(() => new EmojiCard([
+     expect(() => new EmojiSet([])).toThrow("Argument emojis do not have exactly 9 Emojis: ");
+     expect(() => new EmojiSet([Emoji.Eggplant])).toThrow("Argument emojis do not have exactly 9 Emojis: 🍆");
+     expect(() => new EmojiSet([
       Emoji.Eggplant,
       Emoji.AlienMonster,
       Emoji.NewMoonFace,
@@ -16,11 +16,11 @@ describe("EmojiCard", () => {
       Emoji.Garlic,
       Emoji.Turtle,
       Emoji.ColdFace
-    ])).toThrow("Argument emojis do not have exactly 9 Emojis: 🍆,👾,🤖,☂,♟,🦺,🎅,🧄,🐢,🥶");
+    ])).toThrow("Argument emojis do not have exactly 9 Emojis: 🍆,👾,🌚,☂,♟,🦺,🎅,🧄,🐢,🥶");
   });
 
   it("should throw an error if there are any duplicate emoji", () => {
-    expect(() => new EmojiCard([
+    expect(() => new EmojiSet([
      Emoji.Eggplant,
      Emoji.AlienMonster,
      Emoji.NewMoonFace,
@@ -30,8 +30,8 @@ describe("EmojiCard", () => {
      Emoji.SantaClaus,
      Emoji.Garlic,
      Emoji.Turtle,
-   ])).toThrow("Duplicate emojis found in the card: 🎅");
-   expect(() => new EmojiCard([
+   ])).toThrow("Duplicate emojis found in the set: 🎅");
+   expect(() => new EmojiSet([
     Emoji.Eggplant,
     Emoji.AlienMonster,
     Emoji.AlienMonster,
@@ -41,8 +41,8 @@ describe("EmojiCard", () => {
     Emoji.SantaClaus,
     Emoji.Garlic,
     Emoji.Turtle,
-  ])).toThrow("Duplicate emojis found in the card: 👾");
-  expect(() => new EmojiCard([
+  ])).toThrow("Duplicate emojis found in the set: 👾");
+  expect(() => new EmojiSet([
     Emoji.Eggplant,
     Emoji.AlienMonster,
     Emoji.NewMoonFace,
@@ -52,11 +52,11 @@ describe("EmojiCard", () => {
     Emoji.SantaClaus,
     Emoji.Garlic,
     Emoji.Eggplant,
-  ])).toThrow("Duplicate emojis found in the card: 🍆");
+  ])).toThrow("Duplicate emojis found in the set: 🍆");
  });
 
   it("should create the appropriate emojiString from the input", () => {
-    const test = new EmojiCard([
+    const test = new EmojiSet([
       Emoji.Eggplant,
       Emoji.AlienMonster,
       Emoji.NewMoonFace,
@@ -68,12 +68,12 @@ describe("EmojiCard", () => {
       Emoji.Turtle,
     ]);
 
-    expect(test.emojiString).toBe("🍆👾🤖☂♟🦺🎅🧄🐢");
+    expect(test.emojiString).toBe("🍆👾🌚☂♟🦺🎅🧄🐢");
   });
 
   describe("getEmoji", () => {
     it("should fetch the correct emoji", () => {
-      const test = new EmojiCard([
+      const test = new EmojiSet([
         Emoji.Eggplant,
         Emoji.AlienMonster,
         Emoji.NewMoonFace,
