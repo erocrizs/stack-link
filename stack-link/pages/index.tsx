@@ -22,10 +22,17 @@ type SmallCardDetail = { element: JSX.Element, key: string };
 
 const cardSize = 25;
 const maxTime = 60;
+const congratulations = [
+  { min: 25, message: "Perfect!" },
+  { min: 20, message: "Almost There!" },
+  { min: 5, message: "Well Done!" },
+  { min: 0, message: "Good Try!" },
+];
 
 export default function Home() {
   const [state, setState] = useState(HomeState.Loading);
   const [score, setScore] = useState(0);
+  const [finalScore, setFinalScore] = useState<number | null>(null);
   const [lastCard, setLastCard] = useState(false);
   const [generator, setGenerator] : StateTuple<GeneratorType | undefined> = useState<GeneratorType>();
   const [cardStack, setCardStack] : StateTuple<EmojiSet[]> = useState<EmojiSet[]>([]);
@@ -38,8 +45,10 @@ export default function Home() {
   const [punishRemaining, setPunishRemaining] = useState(0);
   const [isTimerRunning, setTimerRunning] = useState(false);
   const timeRef = useRef(timeRemaining);
+  const scoreRef = useRef(score);
 
   timeRef.current = timeRemaining;
+  scoreRef.current = score;
 
   const smallCardDockRef = createRef<HTMLDivElement>();
 
@@ -57,15 +66,25 @@ export default function Home() {
 
   useEffect(() => {
     let timeout: NodeJS.Timeout | undefined;
+
+    if (timeRemaining <= 0) {
+      if (finalScore === null) {
+        setFinalScore(scoreRef.current);
+      }
+      setState(HomeState.Done);
+      setTimeRemaining(0);
+      setTimerRunning(false);
+      return;
+    }
     
-    if (isTimerRunning && timeRemaining > 0) {
+    if (isTimerRunning) {
       timeout = setTimeout(() => {
         setTimeRemaining(timeRemaining - 1);
       }, 1000);
     }
 
     return () => clearTimeout(timeout);
-  }, [timeRemaining, isTimerRunning]);
+  }, [timeRemaining, isTimerRunning, score]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout | undefined;
@@ -93,7 +112,7 @@ export default function Home() {
           element: <MessageCard
             title={`${punishRemaining}`}
             flippedDown/>,
-          key: ""
+          key: "punish-timer"
         }]);
         return;
       }
@@ -107,15 +126,18 @@ export default function Home() {
       return;
     }
 
-    if (state === HomeState.DoneWin) {
+    if (state === HomeState.Done) {
+      const congratulation = congratulations.find(c => c.min <= score);
       setMainCardRender(
         <MessageCard
-          title={`${score} / ${cardSize}`}
-          messages={[
-            "You can replay this exact same stack but your original score stays."
-          ]}
-          buttonOption={{label: "REPLAY", onClick: () => console.log("Replay")}}
-          flippedDown/>
+          title={congratulation?.message || "Good Try!"}
+          messages={[`You got ${score} cards!`]}
+          buttonOption={{
+            label: "SHARE",
+            onClick: () => console.log("Share"),
+          }}
+          flippedDown
+        />
       );
       setSmallCardRenders([
         ...cardStack.map(
@@ -126,14 +148,46 @@ export default function Home() {
         ),
         {
           element: <MessageCard
-            title="You Win!"
-            messages={[`You got all ${score} cards!`, "Share this achievement"]}
-            buttonOption={{
-              label: "SHARE",
-              onClick: () => console.log("Share"),
-            }}
+            title={`Final Score: ${finalScore}`}
+            messages={[
+              "You can replay this exact same stack but your final score stays."
+            ]}
+            buttonOption={{label: "REPLAY", onClick: () => console.log("Replay")}}
           />,
-          key: "share-card"
+          key: "replay-card"
+        },
+      ]);
+      return;
+    }
+
+    if (state === HomeState.DoneWin) {
+      setMainCardRender(
+        <MessageCard
+          title="Perfect!"
+          messages={[`You got all the cards with extra ${timeRemaining}! seconds remaining!`]}
+          buttonOption={{
+            label: "SHARE",
+            onClick: () => console.log("Share"),
+          }}
+          flippedDown
+        />
+      );
+      setSmallCardRenders([
+        ...cardStack.map(
+          (card, index) => ({
+            element: <StackLinkCard card={card} cardNumber={index + 1}/>,
+            key: card.emojiString
+          })
+        ),
+        {
+          element: <MessageCard
+            title={`Final Score: ${finalScore}`}
+            messages={[
+              "You can replay this exact same stack but your final score stays."
+            ]}
+            buttonOption={{label: "REPLAY", onClick: () => console.log("Replay")}}
+          />,
+          key: "replay-card"
         },
       ]);
     }
@@ -148,9 +202,13 @@ export default function Home() {
     const [cardA, cardB] = cardStack.slice(-2);
 
     if (cardA.emojiList.includes(guess) && cardB.emojiList.includes(guess)) {
-      setScore(score + 1);
+      setScore(scoreRef.current + 1);
 
       if (lastCard) {
+        if (finalScore === null) {
+          setFinalScore(cardSize);
+        }
+        setTimerRunning(false);
         setState(HomeState.DoneWin);
         return;
       }
