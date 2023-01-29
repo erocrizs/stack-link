@@ -35,6 +35,7 @@ export default function Home() {
     key: "",
   }]);
   const [timeRemaining, setTimeRemaining] = useState(maxTime);
+  const [punishRemaining, setPunishRemaining] = useState(0);
   const [isTimerRunning, setTimerRunning] = useState(false);
   const timeRef = useRef(timeRemaining);
 
@@ -67,7 +68,36 @@ export default function Home() {
   }, [timeRemaining, isTimerRunning]);
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout | undefined;
+    
+    if (isTimerRunning && punishRemaining > 0) {
+      timeout = setTimeout(() => {
+        setPunishRemaining(punishRemaining - 1);
+      }, 1000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [punishRemaining, isTimerRunning]);
+
+  useEffect(() => {
     if (state === HomeState.Play) {
+
+      if (punishRemaining > 0) {
+        setMainCardRender(
+          <MessageCard
+            title={`Wrong Answer`}
+            messages={["Try again."]}
+            flippedDown/>
+        );
+        setSmallCardRenders([{
+          element: <MessageCard
+            title={`${punishRemaining}`}
+            flippedDown/>,
+          key: ""
+        }]);
+        return;
+      }
+
       const [otherCard, currentCard] = cardStack.slice(-2);
       setMainCardRender(<StackLinkCard card={currentCard} cardNumber={cardStack.length} onClick={guessLinkEmoji}/>)
       setSmallCardRenders([{
@@ -107,7 +137,7 @@ export default function Home() {
         },
       ]);
     }
-  }, [state, cardStack]);
+  }, [state, cardStack, punishRemaining]);
 
   useEffect(() => {
     const dock = smallCardDockRef.current as HTMLDivElement;
@@ -129,6 +159,9 @@ export default function Home() {
       setCardStack([...cardStack, newResult?.value as EmojiSet]);
       setTimeRemaining(Math.min(maxTime, timeRef.current + 5));
       setLastCard(newResult?.done as boolean);
+    }
+    else {
+      setPunishRemaining(3);
     }
   };
 
