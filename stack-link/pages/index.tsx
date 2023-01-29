@@ -4,7 +4,7 @@ import { Emoji } from "@/library/emoji";
 import EmojiSet from "@/library/EmojiSet/EmojiSet";
 import EmojiSetGenerator from "@/library/EmojiSet/EmojiSetGenerator";
 import styles from "@/pages/index.module.scss"
-import { createRef, Dispatch, SetStateAction, useEffect, useState } from "react";
+import { createRef, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 enum HomeState {
   Loading,
@@ -36,6 +36,9 @@ export default function Home() {
   }]);
   const [timeRemaining, setTimeRemaining] = useState(maxTime);
   const [isTimerRunning, setTimerRunning] = useState(false);
+  const timeRef = useRef(timeRemaining);
+
+  timeRef.current = timeRemaining;
 
   const smallCardDockRef = createRef<HTMLDivElement>();
 
@@ -52,11 +55,15 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout | undefined;
+    
     if (isTimerRunning && timeRemaining > 0) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setTimeRemaining(timeRemaining - 1);
       }, 1000);
     }
+
+    return () => clearTimeout(timeout);
   }, [timeRemaining, isTimerRunning]);
 
   useEffect(() => {
@@ -120,6 +127,7 @@ export default function Home() {
 
       const newResult = generator?.next();
       setCardStack([...cardStack, newResult?.value as EmojiSet]);
+      setTimeRemaining(Math.min(maxTime, timeRef.current + 5));
       setLastCard(newResult?.done as boolean);
     }
   };
