@@ -1,0 +1,29 @@
+@use "@/styles/color.scss";
+
+.StackLinkCard {
+  height: 100%;
+  width: 100%;
+  background-color: color.$color-white;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5px;
+
+  .Grid {
+    flex: 1 1 auto;
+    aspect-ratio: 1;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(3, auto);
+    grid-gap: 5px;
+
+    .ImageContainer {
+      position: relative;
+    }
+  }
+
+  .CardNumber {
+    text-align: center;
+  }
+}
