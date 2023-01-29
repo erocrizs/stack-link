@@ -1,8 +1,8 @@
 import MessageCard from "@/components/MessageCard/MessageCard";
 import StackLinkCard from "@/components/StackLinkCard/StackLinkCard";
 import { Emoji } from "@/library/emoji";
-import EmojiCard from "@/library/EmojiCard/EmojiCard";
-import EmojiCardGenerator from "@/library/EmojiCard/EmojiCardGenerator";
+import EmojiSet from "@/library/EmojiSet/EmojiSet";
+import EmojiSetGenerator from "@/library/EmojiSet/EmojiSetGenerator";
 import styles from "@/pages/index.module.scss"
 import { createRef, Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -17,7 +17,7 @@ enum HomeState {
 }
 
 type StateTuple<T> = [T,  Dispatch<SetStateAction<T>>];
-type GeneratorType = Generator<EmojiCard, EmojiCard, undefined>;
+type GeneratorType = Generator<EmojiSet, EmojiSet, undefined>;
 type SmallCardDetail = { element: JSX.Element, key: string };
 
 const cardSize = 25;
@@ -27,7 +27,7 @@ export default function Home() {
   const [score, setScore] = useState(0);
   const [lastCard, setLastCard] = useState(false);
   const [generator, setGenerator] : StateTuple<GeneratorType | undefined> = useState<GeneratorType>();
-  const [cardStack, setCardStack] : StateTuple<EmojiCard[]> = useState<EmojiCard[]>([]);
+  const [cardStack, setCardStack] : StateTuple<EmojiSet[]> = useState<EmojiSet[]>([]);
   const [mainCardRender, setMainCardRender] = useState(<div>Main</div>);
   const [smallCardsRenders, setSmallCardRenders] = useState<SmallCardDetail[]>([{
     element: (<span>Hello world</span>),
@@ -38,7 +38,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!generator) {
-      const newGenerator = EmojiCardGenerator(cardSize);
+      const newGenerator = EmojiSetGenerator(cardSize);
       setGenerator(newGenerator);
       setCardStack([newGenerator.next().value, newGenerator.next().value]);
       setScore(1);
@@ -106,7 +106,7 @@ export default function Home() {
       }
 
       const newResult = generator?.next();
-      setCardStack([...cardStack, newResult?.value as EmojiCard]);
+      setCardStack([...cardStack, newResult?.value as EmojiSet]);
       setLastCard(newResult?.done as boolean);
     }
   };

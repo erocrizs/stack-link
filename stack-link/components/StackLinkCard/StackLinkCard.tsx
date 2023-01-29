@@ -1,10 +1,10 @@
 import { Emoji, GetEmojiSrc } from "@/library/emoji";
-import EmojiCard from "@/library/EmojiCard/EmojiCard";
+import EmojiSet from "@/library/EmojiSet/EmojiSet";
 import Image from "next/image";
 import styles from "./StackLinkCard.module.scss";
 
 type StackLinkCardProps = {
-  card: EmojiCard,
+  card: EmojiSet,
   cardNumber: string | number,
   onClick?: undefined | ((emoji: Emoji) => void),
 };
