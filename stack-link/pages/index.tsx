@@ -21,6 +21,7 @@ type GeneratorType = Generator<EmojiSet, EmojiSet, undefined>;
 type SmallCardDetail = { element: JSX.Element, key: string };
 
 const cardSize = 25;
+const maxTime = 60;
 
 export default function Home() {
   const [state, setState] = useState(HomeState.Loading);
@@ -33,6 +34,8 @@ export default function Home() {
     element: (<span>Hello world</span>),
     key: "",
   }]);
+  const [timeRemaining, setTimeRemaining] = useState(maxTime);
+  const [isTimerRunning, setTimerRunning] = useState(false);
 
   const smallCardDockRef = createRef<HTMLDivElement>();
 
@@ -43,8 +46,18 @@ export default function Home() {
       setCardStack([newGenerator.next().value, newGenerator.next().value]);
       setScore(1);
       setState(HomeState.Play);
+      setTimeRemaining(maxTime);
+      setTimerRunning(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (isTimerRunning && timeRemaining > 0) {
+      setTimeout(() => {
+        setTimeRemaining(timeRemaining - 1);
+      }, 1000);
+    }
+  }, [timeRemaining, isTimerRunning]);
 
   useEffect(() => {
     if (state === HomeState.Play) {
@@ -132,14 +145,14 @@ export default function Home() {
         </div>
         <div className={styles.StatusBar}>
           <div className={styles.TimerBar}>
-            <div className={styles.TimerProgress}></div>
+            <div className={styles.TimerProgress} style={{width: `${timeRemaining * 100 / maxTime}%`}}></div>
           </div>
           <div className={styles.StatusText}>
             <div className={styles.Date}>
               January 4, 2023
             </div>
             <div className={styles.TimerCount}>
-              18 sec
+              {timeRemaining} sec
             </div>
           </div>
         </div>

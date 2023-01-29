@@ -129,6 +129,7 @@
         .TimerProgress {
           height: 100%;
           width: 75%;
+          transition: width 1s linear;
           background-color: color.$color-peach;
           border-top-right-radius: 15px;
           border-bottom-right-radius: 15px;
