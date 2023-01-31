@@ -3,45 +3,10 @@ import StackLinkCard from "@/components/StackLinkCard/StackLinkCard";
 import { Emoji } from "@/library/emoji";
 import EmojiSet from "@/library/EmojiSet/EmojiSet";
 import EmojiSetGenerator from "@/library/EmojiSet/EmojiSetGenerator";
+import { HomeState, SubCardDetail } from "@/library/Frontend/HomeState";
+import { StateTuple } from "@/library/Frontend/StateTuple";
 import styles from "@/pages/index.module.scss"
-import { createRef, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
-
-enum HomeState {
-  Loading,
-  Menu,
-  Play,
-  Done,
-  DoneWin,
-  Replay,
-  InvalidDate,
-}
-
-type StateTuple<T> = [T,  Dispatch<SetStateAction<T>>];
-type GeneratorType = Generator<EmojiSet, EmojiSet, undefined>;
-type SubCardDetail = { element: JSX.Element, key: string };
-
-interface HomeStateValues {
-  state: StateTuple<HomeState>;
-  score: StateTuple<number>;
-  finalScore: StateTuple<number | null>;
-  isLastCard: StateTuple<boolean>;
-  cardStack: StateTuple<EmojiSet[]>;
-  mainCardRender: StateTuple<JSX.Element>;
-  subCardsRender: StateTuple<SubCardDetail[]>;
-  timeRemaining: StateTuple<number>;
-  punishRemaining: StateTuple<number>;
-  isTimerRunning: StateTuple<boolean>;
-  timeRef: MutableRefObject<number>;
-  scoreRef: MutableRefObject<number>;
-};
-
-function get<T>(state: StateTuple<T>): T {
-  return state[0];
-}
-
-function set<T>(state: StateTuple<T>): Dispatch<SetStateAction<T>> {
-  return state[1];
-}
+import { createRef, useEffect, useRef, useState } from "react";
 
 const cardSize = 25;
 const maxTime = 60;
@@ -57,7 +22,7 @@ export default function Home() {
   const [score, setScore] = useState(0);
   const [finalScore, setFinalScore] = useState<number | null>(null);
   const [lastCard, setLastCard] = useState(false);
-  const [generator, setGenerator] : StateTuple<GeneratorType | undefined> = useState<GeneratorType>();
+  const [generator, setGenerator] = useState<Generator<EmojiSet, EmojiSet, undefined>>();
   const [cardStack, setCardStack] : StateTuple<EmojiSet[]> = useState<EmojiSet[]>([]);
   const [mainCardRender, setMainCardRender] = useState(<div>Main</div>);
   const [subCardsRender, setSubCardsRender] = useState<SubCardDetail[]>([{
