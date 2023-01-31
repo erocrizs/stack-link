@@ -4,7 +4,7 @@ import { Emoji } from "@/library/emoji";
 import EmojiSet from "@/library/EmojiSet/EmojiSet";
 import EmojiSetGenerator from "@/library/EmojiSet/EmojiSetGenerator";
 import styles from "@/pages/index.module.scss"
-import { createRef, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { createRef, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 
 enum HomeState {
   Loading,
@@ -18,7 +18,30 @@ enum HomeState {
 
 type StateTuple<T> = [T,  Dispatch<SetStateAction<T>>];
 type GeneratorType = Generator<EmojiSet, EmojiSet, undefined>;
-type SmallCardDetail = { element: JSX.Element, key: string };
+type SubCardDetail = { element: JSX.Element, key: string };
+
+interface HomeStateValues {
+  state: StateTuple<HomeState>;
+  score: StateTuple<number>;
+  finalScore: StateTuple<number | null>;
+  isLastCard: StateTuple<boolean>;
+  cardStack: StateTuple<EmojiSet[]>;
+  mainCardRender: StateTuple<JSX.Element>;
+  subCardsRender: StateTuple<SubCardDetail[]>;
+  timeRemaining: StateTuple<number>;
+  punishRemaining: StateTuple<number>;
+  isTimerRunning: StateTuple<boolean>;
+  timeRef: MutableRefObject<number>;
+  scoreRef: MutableRefObject<number>;
+};
+
+function get<T>(state: StateTuple<T>): T {
+  return state[0];
+}
+
+function set<T>(state: StateTuple<T>): Dispatch<SetStateAction<T>> {
+  return state[1];
+}
 
 const cardSize = 25;
 const maxTime = 60;
@@ -37,7 +60,7 @@ export default function Home() {
   const [generator, setGenerator] : StateTuple<GeneratorType | undefined> = useState<GeneratorType>();
   const [cardStack, setCardStack] : StateTuple<EmojiSet[]> = useState<EmojiSet[]>([]);
   const [mainCardRender, setMainCardRender] = useState(<div>Main</div>);
-  const [smallCardsRenders, setSmallCardRenders] = useState<SmallCardDetail[]>([{
+  const [subCardsRender, setSubCardsRender] = useState<SubCardDetail[]>([{
     element: (<span>Hello world</span>),
     key: "",
   }]);
@@ -108,7 +131,7 @@ export default function Home() {
             messages={["Try again."]}
             flippedDown/>
         );
-        setSmallCardRenders([{
+        setSubCardsRender([{
           element: <MessageCard
             title={`${punishRemaining}`}
             flippedDown/>,
@@ -119,7 +142,7 @@ export default function Home() {
 
       const [otherCard, currentCard] = cardStack.slice(-2);
       setMainCardRender(<StackLinkCard card={currentCard} cardNumber={cardStack.length} onClick={guessLinkEmoji}/>)
-      setSmallCardRenders([{
+      setSubCardsRender([{
         element: <StackLinkCard card={otherCard} cardNumber={cardStack.length - 1} onClick={guessLinkEmoji}/>,
         key: otherCard.emojiString,
       }]);
@@ -139,7 +162,7 @@ export default function Home() {
           flippedDown
         />
       );
-      setSmallCardRenders([
+      setSubCardsRender([
         ...cardStack.map(
           (card, index) => ({
             element: <StackLinkCard card={card} cardNumber={index + 1}/>,
@@ -172,7 +195,7 @@ export default function Home() {
           flippedDown
         />
       );
-      setSmallCardRenders([
+      setSubCardsRender([
         ...cardStack.map(
           (card, index) => ({
             element: <StackLinkCard card={card} cardNumber={index + 1}/>,
@@ -196,7 +219,7 @@ export default function Home() {
   useEffect(() => {
     const dock = smallCardDockRef.current as HTMLDivElement;
     dock.scrollLeft = dock.scrollWidth;
-  }, [smallCardsRenders]);
+  }, [subCardsRender]);
 
   const guessLinkEmoji = (guess: Emoji) => {
     const [cardA, cardB] = cardStack.slice(-2);
@@ -232,7 +255,7 @@ export default function Home() {
           </div>
           <div className={styles.SmallCardDock} ref={smallCardDockRef}>
             {
-              smallCardsRenders.map(({element, key}) => (
+              subCardsRender.map(({element, key}) => (
                 <div key={key} className={styles.SmallCardContainer}>
                   <div className={[styles.SmallCard, styles.Card].join(" ")}>
                     {element}
